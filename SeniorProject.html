@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NKHS Student Tutor Search</title>
+    <style>
+        body {
+            font-family: Verdana, sans-serif;
+            background-color: #fffbf7;
+            color: black;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            font-family: Georgia, serif;
+            background-color: #1B1A17;
+            color: #F0A500;
+            padding: 30px;
+            margin-top: 0px;
+            margin-bottom: 20px;
+            font-size: 50px;
+        }
+        .h2-box {
+            font-family: "Trebuchet MS", sans-serif;
+            color: black;
+            padding: 15px;
+            margin: 40px auto;
+            width: 70%;
+            border-radius: 8px;
+            font-size: 25px;
+        }
+        h2 {
+            font-family: "Trebuchet MS", sans-serif;
+            color: black;
+            padding-top: 15px;
+            padding-bottom: 5px;
+            margin: 10px auto;
+            width: 40%;
+            border-radius: 8px;
+            font-size: 30px;
+        }
+        table {
+            font-family: Verdana, sans-serif;
+            width: 80%;
+            margin: 10px auto;
+            border-collapse: collapse;
+            font-size: 16px;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #E6E6E6;
+        }
+        td:nth-child(even) {
+            background-color: #F4F4F4;
+        }
+        td:nth-child(odd) {
+            background-color: #E6E6E6;
+        }
+        iframe {
+            display: block;
+            margin: 60px auto;
+            border: 1px solid #000;
+        }
+        footer {
+            font-family: Verdana, sans-serif;
+            margin-top: 0;
+            padding: 10px;
+            background-color: #A9A9A9;
+            color: black;
+        }
+        hr {
+            border: 5px solid black;
+            width: 80%;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>NKHS Student Tutor Search</h1>
+    <div class="h2-box">If you are looking for a tutor, please reach out to one of the below volunteers via email. <br> Their preferred subjects and availability are displayed.</div>
+    
+    <h2>Tutor Profiles</h2>
+    <div id="data-container">Loading data...</div>
+
+    <script>
+        const sheetID = "1_nKJnVr07ndM3kcX-o9u4_E3BmXULs0-CBlABuRWiCg";  
+        const sheetName = "Responses";   
+        const apiKey = "AIzaSyB7HAllRnGGtOzV4POBqmkS8-gfrKaBeKU";   
+
+        const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/${sheetName}?key=${apiKey}`;
+
+        fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            console.log("Full API Response:", data);
+
+            if (!data.values || !Array.isArray(data.values) || data.values.length === 0) {
+                throw new Error("No data found in Google Sheet.");
+            }
+
+            const rows = data.values;
+            let html = "<table>";
+            html += "<tr><th>EMAIL</th><th>MATH SUBJECTS</th><th>SCIENCE SUBJECTS</th><th>ENGLISH SKILLS</th><th>HISTORY SUBJECTS</th><th>ADDITIONAL SUBJECTS</th><th>WEEKDAY AVAILABILITY</th><th>WEEKEND AVAILABILITY</tr>";
+            
+            for (let i = 1; i < rows.length; i++) {
+                html += "<tr>";
+                html += `<td>${rows[i][1] || ""}</td>`;
+                html += `<td>${rows[i][2] || ""}</td>`;
+                html += `<td>${rows[i][3] || ""}</td>`;
+                html += `<td>${rows[i][4] || ""}</td>`;
+                html += `<td>${rows[i][5] || ""}</td>`;
+                html += `<td>${rows[i][6] || ""}</td>`;
+                html += `<td>${rows[i][7] || ""}</td>`;
+                html += `<td>${rows[i][8] || ""}</td>`;
+                html += "</tr>";
+            }
+
+            html += "</table>";
+            document.getElementById("data-container").innerHTML = html;
+        })
+        .catch(error => {
+            console.error("Error fetching data:", error);
+            document.getElementById("data-container").innerHTML = `<p style="color:red;">Error loading data. Check console for details.</p>`;
+        });
+    </script>
+
+    <hr>
+
+    <div class="h2-box">If you are interested in being a student tutor, please use this tutor profile form. <br> Once filled, the website will update to display your profile.</div>
+
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSc_dLY9u4RW4-ztWkg9ULTXvdn_FJgsK1CiIoTQ1ZIkk6GM6A/viewform?embedded=true" width="640" height="705" frameborder="1" marginheight="1" marginwidth="1">Loading…</iframe>
+    
+    <footer>Created by Alexander Blasbalg, 2025.</footer>
+</body>
+</html>
